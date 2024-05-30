@@ -21,7 +21,7 @@ cargo add meshtastic
 
 ## Usage
 
-This crate provides basic TCP and serial connection examples within the `/examples` directory. You can run
+This crate provides basic TCP and serial connection examples within the `/examples` directory. Meshtastic uses TCP port 4403. You can run
 these examples using the following commands:
 
 ```bash
