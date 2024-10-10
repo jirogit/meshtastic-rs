@@ -7,7 +7,12 @@ fn main() -> std::io::Result<()> {
     // Allows protobuf compilation without installing the `protoc` binary
     match protoc_bin_vendored::protoc_bin_path() {
         Ok(protoc_path) => {
-            std::env::set_var("PROTOC", protoc_path);
+            if std::env::var("PROTOC").ok().is_some() {
+                println!("Using PROTOC set in environment.");
+            } else {
+                println!("Setting PROTOC to protoc-bin-vendored version.");
+                std::env::set_var("PROTOC", protoc_path);
+            }
         }
         Err(err) => {
             println!("Install protoc yourself, protoc-bin-vendored failed: {err}");
@@ -50,6 +55,7 @@ fn main() -> std::io::Result<()> {
     #[cfg(feature = "serde")]
     {
         config.type_attribute(".", "#[serde(rename_all = \"camelCase\")]");
+        config.type_attribute(".", "#[allow(clippy::doc_lazy_continuation)]");
     }
 
     config.compile_protos(&protos, &[protobufs_dir]).unwrap();
